@@ -8,7 +8,7 @@ let spRec = new sr()
 spRec.continuous = true
 spRec.interimResults = true
 // spRec.lang = "hi"
-let count = 2
+let count = 2   
 spRec.start()
 setTimeout(function(){
     spRec.stop()
