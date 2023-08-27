@@ -5,6 +5,10 @@
     box-sizing: border-box;
     font-family: Roboto;
 }
+::selection{
+    background-color: aqua;
+    color: #fff;
+}
 body{
     background: url(./assets/astronaut-space-art.jpg);
     background-size: cover;
