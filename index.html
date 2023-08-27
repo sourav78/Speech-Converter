@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cont">
+      <!-- Header section -->
+      <div class="header-cont glassmorph">
+        <h1>Speech Converter</h1>
+        <div class="text-type">
+          <p>Convert from <span id="type"></span></p>
+        </div>
+      </div>
+
+      <!-- Two options -->
+      <div class="subject">
+        <div class="sub text-to-speech glassmorph">
+          <img src="./assets/text-to-speech.png" alt="text to speech">
+          <p>Text To Speech</p>
+          <a href="./textToSpeech.html">Get Started</a>
+        </div>
+        <div class="sub speech-to-text glassmorph">
+          <img src="./assets/icons8-speech-to-text-90.png" alt="text to speech">
+          <p>Speech To Text</p>
+          <a href="./speechToText.html">Get Started</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+    <script>
+      let typed = new Typed("#type", {
+          strings: ["Text To Speech", "Speech To Text"],
+          typeSpeed: 150,
+          backSpeed: 150,
+          loop: true
+      })
+  </script>
+</body>
+</html>

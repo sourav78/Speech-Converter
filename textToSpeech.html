@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Roboto;
+            color: #fff;
+        }
+        body{
+            background: url(./assets/polygon-orange-abstract-texture.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .cont{
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .glassmorph{
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .header{
+            max-width: 600px;
+            width: 100%;
+            margin: 10px auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+        }
+
+        .text-type{
+            margin-top: 20px;
+        }
+        .text-type p{
+            font-weight: 700;
+            font-size: 24px;
+        }
+        #type{
+            color: #fd925c;
+        }
+
+        .main{
+            max-width: 950px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 20px;
+            /* display: flex;
+            flex-direction: column; */
+        }
+        #voice{
+            display: block;
+            padding: 8px 16px;
+            color: #ffffff;
+            font-size: 18px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            outline: none;
+            background-color: transparent;
+            margin: auto;
+        }
+        #voice:focus{
+            border: 2px solid #fd925c;
+        }
+        option{
+            color: black;
+        }
+
+        #txt-area{
+            display: block;
+            padding: 5px 10px;
+            resize: none;
+            max-width: 750px;
+            width: 100%;
+            height: 300px;
+            margin: 20px auto;
+            border: 2px solid #fff;
+            background-color: transparent;
+            outline: none;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+        #txt-area:focus{
+            border: 2px solid #fd925c;
+        }
+        #txt-area::-webkit-scrollbar{
+            width: 8px;
+        }
+        #txt-area::-webkit-scrollbar-thumb{
+            background-color: #fd925c;
+            border-radius: 10px;
+        }
+
+        .btns{
+            display: flex;
+            justify-content: space-around;
+            max-width: 300px;
+            width: 100%;
+            gap: 40px;
+            margin: auto;
+        }
+        .btn{
+            display: grid;
+            place-content: center;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+        .btn img{
+            width: 40px;
+        }
+        @media screen and (max-width: 600px) {
+            .cont{
+                width: 100%;
+                margin: 30px auto;
+                padding: 20px;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            .cont{
+                padding: 16px;
+            }
+            .header{
+                padding: 10px;
+            }
+            .header h1{
+                font-size: 22px;
+            }
+            .text-type p{
+                font-weight: 500;
+                font-size: 22px;
+            }
+            #voice{
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            #txt-area{
+                font-size: 18px;
+            }
+        }
+
+        @media screen and (max-width: 350px) {
+            .cont{
+                padding: 10px;
+            }
+            .header{
+                padding: 10px;
+            }
+            .header h1{
+                font-size: 22px;
+            }
+            .text-type p{
+                font-weight: 500;
+                font-size: 20px;
+            }
+            #voice{
+                padding: 8px 8px;
+                font-size: 12px;
+            }
+            #txt-area{
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cont">
+        <div class="header glassmorph">
+            <h1>Text to Speech Converter</h1>
+            <div class="text-type">
+                <p>Convert Any <span id="type"></span></p>
+            </div>
+        </div>
+
+        <div class="main glassmorph">
+            <select name="" id="voice"></select>
+            <textarea name="text-sppech" placeholder="Enter/Paste your text here" id="txt-area" cols="10" rows="11"></textarea>
+            <div class="btns">
+                <div class="btn" id="speak">
+                    <img id="idplaypause" src="./assets/volume-up.png" alt="">
+                </div>
+                <div class="btn" id="pause">
+                    <img id="idresume" src="./assets/pause.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+    <script>
+      let typed = new Typed("#type", {
+          strings: ["Text To Speech"],
+          typeSpeed: 150,
+          backSpeed: 150,
+          loop: true
+      })
+  </script>
+</body>
+<script>
+    let voiceArea = document.getElementById("voice")
+    let speak = document.getElementById("speak")
+    let textArea = document.getElementById("txt-area")
+
+    let speakStop = document.getElementById("idplaypause")
+    let pauseresume = document.getElementById("idresume")
+
+    let startStop = 0
+    let pauseResume = 0
+
+    let voices
+    if("speechSynthesis" in window){
+        speechSynthesis.onvoiceschanged = () => {
+            voices = speechSynthesis.getVoices()
+            voices.map(voice => {
+                voiceArea.innerHTML += `<option>${voice.name}</option>`
+            })
+
+        }
+
+        speak.addEventListener("click", (e) => {
+            if(startStop % 2 == 0){
+                let txtSp = new SpeechSynthesisUtterance()
+                txtSp.text = textArea.value
+                let selectedVoice = voiceArea.querySelector("option:checked").value
+                let finalVoice = voices.filter(v => {
+                    return v.name ==selectedVoice
+                })
+                txtSp.voice = finalVoice[0]
+                speechSynthesis.cancel();
+                speechSynthesis.speak(txtSp)
+
+                startStop++
+                speakStop.setAttribute("src", "./assets/volume-mute.png")
+
+                txtSp.onend = () => {
+                    startStop++
+                    speakStop.setAttribute("src", "./assets/volume-up.png")
+                }
+            }else{
+                speechSynthesis.cancel()
+                speechSynthesis.resume()
+                pauseResume++
+                startStop++
+                speakStop.setAttribute("src", "./assets/volume-up.png")
+                pauseresume.setAttribute("src", "./assets/play-button.png")
+            }
+            
+        })
+
+        document.getElementById("pause").addEventListener("click", (e) => {
+            if(pauseResume % 2 == 0){
+                speechSynthesis.pause()
+                pauseResume++
+                pauseresume.setAttribute("src", "./assets/pause.png")
+            }else{
+                speechSynthesis.resume()
+                pauseResume++
+                pauseresume.setAttribute("src", "./assets/play-button.png")
+            }
+        })
+
+    }else{
+        alert("Your browser does not support this app")
+    }
+</script>
+</html>
